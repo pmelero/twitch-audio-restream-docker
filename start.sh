@@ -38,9 +38,10 @@ while true; do
             output_file="${USERNAME}_${timestamp}.mp3"
 
             if $SAVE_TO_FILE; then
+                mkdir -p "audio/$USERNAME"
                 yt-dlp -q -o - "https://www.twitch.tv/${USERNAME}" 2>/dev/null | \
                 tee >(ffmpeg -i pipe:0 -f mp3 "icecast://source:${ICECAST_PASSWORD}@localhost:8000/${USERNAME}" -loglevel warning) | \
-                ffmpeg -i pipe:0 -f mp3 "audio/$output_file" -loglevel warning &
+                ffmpeg -i pipe:0 -f mp3 "audio/$USERNAME/$output_file" -loglevel warning &
             else
                 yt-dlp -q -o - "https://www.twitch.tv/${USERNAME}" 2>/dev/null | \
                 ffmpeg -i pipe:0 -f mp3 "icecast://source:${ICECAST_PASSWORD}@localhost:8000/${USERNAME}" -loglevel warning &
